@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  MainFunction:
+    FunctionName: convert-images
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: convert_images/
+      Handler: handler.main
+      Runtime: python3.9
+      Architectures: [arm64]
+    # S3 Events only work with Buckets created in the same stack
+    # for now we must add them by hand or use a workaround like this:
+    # https://github.com/aws/serverless-application-model/issues/124
+    # Events:
+    #   S3ObjectCreate:
+    #     Type: S3
+    #     Properties:
+    #       Bucket: lorrgs-assets
+    #       Events: s3:ObjectCreated:*
+    #       Filter:
+    #         S3Key:
+    #           Rules:
+    #           - Name: suffix
+    #             Value: .png
+    #           - Name: suffix
+    #             Value: .jpg
+
+Outputs:
+  MainFunction:
+    Value: !GetAtt MainFunction.Arn
+  MainFunctionIamRole:
+    Value: !GetAtt MainFunctionRole.Arn
