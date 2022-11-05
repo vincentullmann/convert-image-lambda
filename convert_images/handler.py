@@ -25,6 +25,8 @@ def convert(bucket: str, path: str):
         print(e)
         return
 
+    print(f"Converting: {path}")
+
     image = Image.open(source_image["Body"])
 
     # Save to Buffer
@@ -46,7 +48,7 @@ def convert(bucket: str, path: str):
         ContentType="image/webp",
         **kwargs
     )
-    print(sent_data)
+    # print(sent_data)
     # if sent_data['ResponseMetadata']['HTTPStatusCode'] != 200:
     #     raise S3ImagesUploadFailed('Failed to upload image {} to bucket {}'.format(key, bucket))
 
