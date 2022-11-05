@@ -34,13 +34,17 @@ def convert(bucket: str, path: str):
     basename, _ = os.path.splitext(path)
     new_path = f"{basename}.webp"
 
+    kwargs = {}
+    if source_image.get("CacheControl"):
+        kwargs["CacheControl"] = source_image.get("CacheControl")
+
     # Save Buffer to S3
     sent_data = s3.put_object(
         Bucket=bucket,
         Key=new_path,
         Body=buffer.getvalue(),
         ContentType="image/webp",
-        CacheControl=source_image.get("CacheControl"),
+        **kwargs
     )
     print(sent_data)
     # if sent_data['ResponseMetadata']['HTTPStatusCode'] != 200:
